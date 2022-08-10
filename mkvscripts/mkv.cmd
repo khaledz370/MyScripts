@@ -24,7 +24,9 @@ if not exist "%CD%\options.json" (
 )
 
 if not exist "%CD%\mkvmerge_out" (mkdir "%CD%\mkvmerge_out")
-for %%A in ("%CD%/*.%extention%") do %mkvmerge% @options.json -o "%CD%/mkvmerge_out/%%~nA.mkv" "%CD%\%%~nA.%extention%"
+for %%A in ("%CD%/*.%extention%") do (
+    %mkvmerge% @options.json -o "%CD%/mkvmerge_out/%%~nA.mkv" "%CD%\%%~nA.%extention%"
+)
 echo.
 echo ============================
 echo Done. Press any key to exit.

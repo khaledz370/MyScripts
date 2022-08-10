@@ -12,9 +12,11 @@ if not DEFINED "%mkDir%" (
 
 if not exist %mkvtoolnix% ( exit )
 
-if not exist "%CD%\mkvmerge_out" (mkdir "%CD%\mkvmerge_out")
+if not exist "%CD%\mkvmerge_old" (mkdir "%CD%\mkvmerge_old")
 for %%A in ("%CD%/*.%extention%") do (
-%mkvtoolnix% --output "%CD%/mkvmerge_out/%%~nA.mkv" "%CD%\%%~nA.%extention%" --language 0:en "%CD%\%%~nA.%additionalFile%" 
+move "%CD%\%%~nA.%extention%" "%CD%/mkvmerge_old/%%~nA.%extention%"
+move "%CD%\%%~nA.%additionalFile%"  "%CD%/mkvmerge_old/%%~nA.%additionalFile%" 
+%mkvtoolnix% --output "%CD%/%%~nA.mkv" "%CD%/mkvmerge_old/%%~nA.%extention%" --language 0:en "%CD%/mkvmerge_old/%%~nA.%additionalFile%" 
 )
 echo.
 echo ============================
