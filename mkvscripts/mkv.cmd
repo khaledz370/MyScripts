@@ -17,14 +17,8 @@ if not DEFINED "%mkDir%" (
 
 if not exist %mkvmerge% ( exit )
 
-if not exist "%CD%\options.json" (
-    echo Options file 'options.json' not found. Exiting.
-    pause>nul
-    exit
-)
-
 if not exist "%CD%\mkvmerge_out" (mkdir "%CD%\mkvmerge_out")
-for %%A in ("%CD%/*.%extention%") do (
+for %%A in ("%CD%\*.%extention%") do (
     %mkvmerge% @options.json -o "%CD%/mkvmerge_out/%%~nA.mkv" "%CD%\%%~nA.%extention%"
 )
 echo.
