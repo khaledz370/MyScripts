@@ -17,9 +17,10 @@ if not DEFINED "%mkDir%" (
 
 if not exist %mkvmerge% ( exit )
 
-if not exist "%CD%\mkvmerge_out" (mkdir "%CD%\mkvmerge_out")
+if not exist "%CD%\mkvmerge_old" (mkdir "%CD%\mkvmerge_old")
 for %%A in ("%CD%\*.%extention%") do (
-    %mkvmerge% @options.json -o "%CD%/mkvmerge_out/%%~nA.mkv" "%CD%\%%~nA.%extention%"
+    move "%CD%\%%~nA.%extention%" "%CD%/mkvmerge_old/%%~nA.mkv"
+    %mkvmerge% @options.json -o "%CD%/%%~nA.mkv" "%CD%\mkvmerge_old\%%~nA.%extention%"
 )
 echo.
 echo ============================
