@@ -15,10 +15,10 @@ for /d %%x in ("%CD%\*") do (
     for %%A in ("%%x\*.%extention%") do (
         if not exist "%%x\mkvmerge_old" (mkdir "%%x\mkvmerge_old")
         if not exist "%%x\%%~nA.mkv" (
-            move "%%x\%%~nA.%extention%" "%%x\mkvmerge_old\%%~nA.%extention%"
+            move "%%x\%%~nA.%extention%" "%CD%\mkvmerge_old\%%~nA.%extention%"
         ) else (
-            move "%%x\%%~nA.%extention%" "%%x\mkvmerge_old\%%~nA.%extention%"
-            move "%%x\%%~nA.mkv" "%%x\mkvmerge_old\%%~nA.mkv"
+            move "%%x\%%~nA.%extention%" "%CD%\mkvmerge_old\%%~nA.%extention%"
+            move "%%x\%%~nA.mkv" "%CD%\mkvmerge_old\%%~nA.mkv"
         )
         %mkvtoolnix% --output "%%x/%%~nA.mkv" "%%x\mkvmerge_old\%%~nA.%extention%" 
     )
