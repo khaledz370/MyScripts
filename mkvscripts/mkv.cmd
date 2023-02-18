@@ -9,7 +9,7 @@ set /p extention= video ext:
 set /p mkvDir= mkv dir: 
 @echo off
 
-if not DEFINED "%mkDir%" (
+if not DEFINED "%mkvDir%" (
     set mkvmerge="C:\Program Files\MKVToolNix\mkvmerge.exe"  
 )ELSE (
     set mkvmerge="C:\Program Files\MKVToolNix\%mkvDir%\mkvmerge.exe"
@@ -17,7 +17,7 @@ if not DEFINED "%mkDir%" (
 
 if not exist %mkvmerge% ( exit )
 
-if not exist "%CD%\mkvmerge_old" (mkdir "%CD%\mkvmerge_old")
+if not exist "%CD%\mkvmerge_old" (mkvDir "%CD%\mkvmerge_old")
 for %%A in ("%CD%\*.%extention%") do (
     move "%CD%\%%~nA.%extention%" "%CD%/mkvmerge_old/%%~nA.mkv"
     %mkvmerge% @options.json -o "%CD%/%%~nA.mkv" "%CD%\mkvmerge_old\%%~nA.%extention%"
