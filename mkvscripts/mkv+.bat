@@ -12,7 +12,7 @@ if not DEFINED "%mkvDir%" (
 
 if not exist %mkvtoolnix% ( exit )
 
-if not exist "%CD%\mkvmerge_old" (mkvDir "%CD%\mkvmerge_old")
+if not exist "%CD%\mkvmerge_old" (mkdir "%CD%\mkvmerge_old")
 for %%A in ("%CD%\*.%extention%") do (
     if exist "%CD%\%%~nA.%extention%" (
         if exist "%CD%\%%~nA.%additionalFile%" (

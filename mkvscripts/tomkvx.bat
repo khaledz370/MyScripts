@@ -11,7 +11,7 @@ if not DEFINED "%mkvDir%" (
 
 @echo %mkvDir%
 if not exist %mkvtoolnix% ( exit )
-if not exist "%CD%\mkvmerge_old" (mkvDir "%CD%\mkvmerge_old")
+if not exist "%CD%\mkvmerge_old" (mkdir "%CD%\mkvmerge_old")
 for /d %%x in ("%CD%\*") do (
     for %%A in ("%%x\*.%extention%") do (
         if not exist "%%x\%%~nA.mkv" (

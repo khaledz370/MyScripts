@@ -11,7 +11,7 @@ if not DEFINED "%mkvDir%" (
 
 if not exist %mkvtoolnix% ( exit )
 
-if not exist "%CD%\mkvmerge_audio" (mkvDir "%CD%\mkvmerge_audio")
+if not exist "%CD%\mkvmerge_audio" (mkdir "%CD%\mkvmerge_audio")
 for %%A in ("%CD%/*.%extention%") do (
     %mkvtoolnix% --output "%CD%/mkvmerge_audio/%%~nA.mka" --no-video --language 1:und  "%CD%\%%~nA.%extention%"
 )

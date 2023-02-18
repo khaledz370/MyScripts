@@ -12,7 +12,7 @@ if not DEFINED "%mkvDir%" (
 
 if not exist %mkvtoolnix% ( exit )
 
-if not exist "%CD%\mkvmerge_split" (mkvDir "%CD%\mkvmerge_split")
+if not exist "%CD%\mkvmerge_split" (mkdir "%CD%\mkvmerge_split")
 for %%A in ("%CD%\*.%extention%") do (
     %mkvtoolnix% --output "%CD%\mkvmerge_split\%%~nA.%extention%" "%CD%/%%~nA.mkv" --split timestamps:%split% 
 ) 
