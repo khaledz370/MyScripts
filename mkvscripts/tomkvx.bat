@@ -9,7 +9,6 @@ if not DEFINED "%mkvDir%" (
     set mkvtoolnix="C:\Program Files\MKVToolNix\%mkvDir%\mkvmerge.exe"
 )
 
-@echo %mkvDir%
 if not exist %mkvtoolnix% ( exit )
 if not exist "%CD%\mkvmerge_old" (mkdir "%CD%\mkvmerge_old")
 for /d %%x in ("%CD%\*") do (
