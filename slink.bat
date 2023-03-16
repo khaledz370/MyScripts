@@ -1,5 +1,10 @@
 @echo off
-set /p originalFolder=main folder or file: 
-set /p symbolicFolder=Symbolic Link folder or file Name:
+set /p originalFolder=Real File/Folder path: 
+set /p symbolicFolder=Symbolic Link folder path: 
+set /p FileName=File/Folder Name: 
+
+set originalFolder=%originalFolder:"=%
+set symbolicFolder=%symbolicFolder:"=%
+
 @echo off
-mklink /D %symbolicFolder% %originalFolder%
+mklink /D "%symbolicFolder%\%FileName%" "%originalFolder%"
