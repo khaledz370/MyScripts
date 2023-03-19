@@ -1,6 +1,7 @@
 @echo off
 set /p extention= video ext: 
 set /p additionalFile= additionalFile ext: 
+set /p lang= language: 
 set /p additionalName= additional FileName Ending: 
 set /p mkvDir= mkv dir: 
 @echo off
@@ -16,10 +17,10 @@ if not exist %mkvtoolnix% ( exit )
 if not exist "%CD%\mkvmerge_old" (mkdir "%CD%\mkvmerge_old")
 for %%A in ("%CD%\*.%extention%") do (
     if exist "%CD%\%%~nA.%extention%" (
-        if exist "%CD%\%%~nA.%additionalFile%" (
+        if exist "%CD%\%%~nA%additionalName%.%additionalFile%" (
             move "%CD%\%%~nA.%extention%" "%CD%/mkvmerge_old/%%~nA.%extention%"
-            move "%CD%\%%~nA.%additionalFile%%additionalName%"  "%CD%/mkvmerge_old/%%~nA.%additionalFile%%additionalName%" 
-            %mkvtoolnix% --output "%CD%/%%~nA.mkv" "%CD%/mkvmerge_old/%%~nA.%extention%" --language 0:en "%CD%/mkvmerge_old/%%~nA.%additionalFile%%additionalName%" 
+            move "%CD%\%%~nA%additionalName%.%additionalFile%"  "%CD%/mkvmerge_old/%%~nA%additionalName%.%additionalFile%" 
+            %mkvtoolnix% --output "%CD%/%%~nA.mkv" "%CD%/mkvmerge_old/%%~nA.%extention%" --language 0:%lang% "%CD%/mkvmerge_old/%%~nA%additionalName%.%additionalFile%" 
         )
     )  
 )
