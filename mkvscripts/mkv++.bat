@@ -1,7 +1,7 @@
 @echo off
 set /p extention= video ext: 
 set /p additionalFile= additionalFile ext: 
-set /p lang= language: 
+set /p lg= language: 
 set /p additionalName= additional FileName Ending: 
 set /p mkvDir= mkv dir: 
 @echo off
@@ -20,7 +20,7 @@ for %%A in ("%CD%\*.%extention%") do (
         if exist "%CD%\%%~nA%additionalName%.%additionalFile%" (
             move "%CD%\%%~nA.%extention%" "%CD%/mkvmerge_old/%%~nA.%extention%"
             move "%CD%\%%~nA%additionalName%.%additionalFile%"  "%CD%/mkvmerge_old/%%~nA%additionalName%.%additionalFile%" 
-            %mkvtoolnix% --output "%CD%/%%~nA.mkv" "%CD%/mkvmerge_old/%%~nA.%extention%" --language 0:%lang% "%CD%/mkvmerge_old/%%~nA%additionalName%.%additionalFile%" 
+            %mkvtoolnix% --output "%CD%/%%~nA.mkv" "%CD%/mkvmerge_old/%%~nA.%extention%" --language 0:%lg% "%CD%/mkvmerge_old/%%~nA%additionalName%.%additionalFile%" 
         )
     )  
 )
