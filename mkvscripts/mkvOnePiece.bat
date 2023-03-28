@@ -1,5 +1,6 @@
 @echo off
-set mkvtoolnix= "C:\Program Files\MKVToolNix\mkvmerge.exe"  
+Setlocal enabledelayedexpansion
+set mkvtoolnix= "C:\Program Files\MKVToolNix\mkvmerge.exe"
 @echo off
 
 if not exist %mkvtoolnix% ( exit )
@@ -11,6 +12,9 @@ for %%A in ("%CD%\*.mkv") do (
             move "%CD%\%%~nA.srt"  "%CD%/mkvmerge_old/%%~nA.srt" 
             move "%CD%\%%~nA.en.srt"  "%CD%/mkvmerge_old/%%~nA.en.srt" 
             %mkvtoolnix% --output "%CD%/%%~nA.mkv" "%CD%/mkvmerge_old/%%~nA.mkv" --language 0:de "%CD%/mkvmerge_old/%%~nA.srt" --language 0:en --default-track-flag 0:no "%CD%/mkvmerge_old/%%~nA.en.srt" 
+
+            Set "File=%%~nxA"
+            Ren "%%A" "!File: no sub=!"
     )  
 )
 echo.
