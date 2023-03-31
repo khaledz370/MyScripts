@@ -1,6 +1,6 @@
 @echo off
 Setlocal enabledelayedexpansion
-set mkvtoolnix= "C:\Program Files\MKVToolNix\mkvmerge.exe"
+set mkvtoolnix="C:\Program Files\MKVToolNix\mkvmerge.exe"
 @echo off
 
 if not exist %mkvtoolnix% ( exit )

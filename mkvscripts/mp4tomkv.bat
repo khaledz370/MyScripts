@@ -1,5 +1,5 @@
 @echo off
-set  extention= "mp4"
+set  extention="mp4"
 set /p mkvDir= mkv dir: 
 @echo off
 
