@@ -16,14 +16,11 @@ def main():
         # browser
         [psg.LBox([], size=(20, 10),enable_events=True, expand_x=True,expand_y=True, key="tomkvList",select_mode="multiple"),
          psg.Column([
-            [psg.Listbox(['.mp4','.mkv','.flv', '.ts','.avi'],enable_events=True,select_mode="multiple",size=(10, 6),key='fileTypes')],
-            [psg.Input(visible=False, enable_events=True,key="myFiles", expand_x=True),psg.FilesBrowse(size=(10, 0),key="filesBrowser",visible=False)],
-            [psg.Input(visible=False, enable_events=True,key="myFolders", expand_x=True),psg.FolderBrowse(size=(10, 0),key="folderBrowser",visible=True)],
+            [psg.Listbox(['.mp4','.mkv','.flv', '.ts','.avi'],enable_events=True,select_mode="multiple",size=(10, 5),key='fileTypes')],
+            [psg.Input(visible=False, enable_events=True,key="myFiles", expand_x=True),psg.FilesBrowse(size=(10, 0),key="filesBrowser",visible=False),
+             psg.Input(visible=False, enable_events=True,key="myFolders", expand_x=True),psg.FolderBrowse(size=(10, 0),key="folderBrowser",visible=True)],
             [psg.Button("delete",key="delBtn",enable_events=True,size=(10, 0))]
-            ])],
-        
-        [psg.Text("Output folder")],
-                
+            ])],                
         [psg.Button("convert", key="converToMkv", size=(15, 0))],
     ]
 
@@ -35,7 +32,7 @@ def main():
         [psg.OK(), psg.Exit()]
     ]
     window = psg.Window("my first app", layout,
-                        resizable=True, size=(600, 420))
+                        resizable=True, size=(600, 400))
     selectedDir = ""
     
     while True:
@@ -91,7 +88,8 @@ def main():
 
         # convert to mkv
         if event == "converToMkv":
-            if len(selectedFilesList):
+            arraySize= len(selectedFilesList)
+            if arraySize:
                 mkvMerge = "C:\Program Files\MKVToolNix\mkvmerge.exe"
                 print(selectedDir)
                 
@@ -103,18 +101,19 @@ def main():
                     print(file)
                     textMove = "move \"{}\\{}\" \"{}\\mkvmerge_old\\{}\""
                     commandMove = textMove.format(selectedDir,splitPath(file)["file"], selectedDir, splitPath(file)["file"])
-                    print(commandMove)
+                    # print(commandMove)
                     runCommand(commandMove)
-
                     mkvCommandText = "\"{}\" --output \"{}\\{}.mkv\" \"{}\\mkvmerge_old\\{}\""
                     mkvCommand = mkvCommandText.format(mkvMerge, selectedDir, splitPath(
                         file)["wExt"], selectedDir, splitPath(file)["file"])
                     # print(mkvCommand)
-                    window["pBar"].Update(current_count=(100*index/len(selectedFilesList)))
+                    window["pBar"].Update(current_count=(100*(index+1)/arraySize))
                     runCommand(mkvCommand)
-                    window["pBar"].Update(current_count=(100*(index+1)/len(selectedFilesList)))
+                    selectedFilesList.pop(0)
+                    window["tomkvList"].Update(selectedFilesList)
+                    window["pBar"].Update(current_count=100*(index+2)/arraySize)
+                window["tomkvList"].Update([])
         # end of convert to mkv
-
     window.close()
 
 
@@ -131,7 +130,7 @@ def runCommand(cmd, timeout=None, window=None):
                 3, 5) else "backslashreplace"
         ).rstrip()
         output += line
-        print(line)
+        # print(line)
         window.Refresh() if window else None  # yes, a 1-line if, so shoot me
     retval = p.wait(timeout)
     return (retval, output)
