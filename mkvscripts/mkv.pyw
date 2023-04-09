@@ -6,6 +6,7 @@ import PySimpleGUI as psg
 def main():
     mkvMerge = "C:\Program Files\MKVToolNix\mkvmerge.exe"
     selectedDir = ""
+    # tomkv tab layout
     tomkvLayout = [
         [psg.Text("convert video to mkv", size=(
             600, 0), justification="center")],
@@ -26,7 +27,9 @@ def main():
          ])],
         [psg.Button("convert", key="converToMkv", size=(15, 0))],
     ]
+    # end of tomkv tab layout
     
+    # toaudio tab layout
     toaudioLayout = [
         [psg.Text("convert video to audio", size=(
             600, 0), justification="center")],
@@ -47,19 +50,22 @@ def main():
          ])],
         [psg.Button("convert to audio", key="converToaudio", size=(15, 0))],
     ]
-    
+    # end of toaudio tab layout
   
+    # tab group
     tomkvTab = [psg.Tab('to Mkv', tomkvLayout, key="tomkv"),
                 psg.Tab("to Audio", toaudioLayout, key="toaudio")]
-
+    # end of tab group
+    
+    # layout
     layout = [
         [psg.TabGroup([tomkvTab],change_submits=True,key="myTabs")],
         [psg.ProgressBar(100, orientation='h', expand_x=True, size=(20, 20),  key='PBar')],
         [psg.OK(), psg.Exit(),psg.Text("",key="currentFile")]
     ]
+    # end of layout
 
-    window = psg.Window("my first app", layout,
-                        resizable=True, size=(600, 400))
+    window = psg.Window("my first app", layout, resizable=True, size=(600, 400))
 
     while True:
         event, values = window.read()
@@ -79,6 +85,7 @@ def main():
             window[f"{activeTab}FileTypes"].Update(visible=False)
             window[f"{activeTab}FolderBrowser"].Update(visible=False)
             window[f"{activeTab}SelectText"].Update("Select files") 
+        # end of switch between folder/file selection tomkv
 
         # browse for files
         if event == f"{activeTab}MyFiles":
@@ -86,6 +93,7 @@ def main():
             selectedFilesList = str(values["tomkvMyFiles"]).split(";")
             if len(selectedFilesList):
                 selectedDir = fixPath(str(splitPath(selectedFilesList[0])["path"]))
+        # end of browse for files
 
         # browse for folder
         if event == f"{activeTab}MyFolders":
@@ -100,7 +108,8 @@ def main():
             selectedFilesList = newArray
             # print(selectedFilesList)
             window[f"{activeTab}List"].Update(selectedFilesList)
-
+        # end of browse for folder
+        
         # on select file types
         if event == f"{activeTab}FileTypes":
             if len(values[f"{activeTab}MyFolders"]):
@@ -113,6 +122,7 @@ def main():
                         newArray.append((f"{selectedDir}\\{x}"))
                 selectedFilesList = newArray
                 window[f"{activeTab}List"].Update(selectedFilesList)
+        # end of on select file types
                 
         # enable and disable delete button
         if event == f"{activeTab}List":
@@ -122,7 +132,8 @@ def main():
                 window[f"{activeTab}DelBtn"].Update(disabled=False)
             else:
                 window[f"{activeTab}DelBtn"].Update(disabled=True)
-
+        # end of enable and disable delete button
+        
         # on delete item
         if event == f"{activeTab}DelBtn":
             print("this is the selected file list=>",selectedFilesList)
@@ -137,6 +148,7 @@ def main():
                 window[f"{activeTab}List"].Update(selectedFilesList)
             if not len(selectedFilesList):
                 window[f"{activeTab}DelBtn"].Update(disabled=True)
+        # end of on delete item
 
         # convert to mkv
         if event == "converToMkv":
@@ -186,7 +198,7 @@ def main():
             window["toaudioList"].Update([])
             window["PBar"].Update(current_count=0)
             window["currentFile"].Update("")
-        # end of convert to mkv
+        # end of convert to audio
     window.close()
 
 
@@ -207,7 +219,7 @@ def runCommand(cmd, timeout=None, window=None):
         window.Refresh() if window else None  # yes, a 1-line if, so shoot me
     retval = p.wait(timeout)
     return (retval, output)
-
+# end of run cmd commands
 
 # getting file dir and name
 def splitPath(fullPath):
@@ -216,10 +228,12 @@ def splitPath(fullPath):
     fullname = {"path": head, "file": tail,
                 "wExt": fileNameSplit[0], "ext": fileNameSplit[1]}
     return fullname
+# end of getting file dir and name
 
-
+# fix file paht 
 def fixPath(path):
     return path.replace("/", "\\")
+# end of fix file paht 
 
 if __name__ == "__main__":
     main()
