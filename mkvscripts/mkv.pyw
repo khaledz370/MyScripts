@@ -1,7 +1,5 @@
 import os,shutil,sys,subprocess
 import PySimpleGUI as psg
-# import glob
-
 
 def main():
     mkvMerge = "C:\Program Files\MKVToolNix\mkvmerge.exe"
