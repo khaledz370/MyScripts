@@ -1,7 +1,8 @@
 import os,shutil,sys,subprocess
-import PySimpleGUI as psg
+import PySimpleGUIQt as psg
 
 def main():
+    psg.theme('LightBlue3')
     # global values
     mkvMerge = "C:\Program Files\MKVToolNix\mkvmerge.exe"
     mkvpropedit= "C:\Program Files\MKVToolNix\mkvpropedit.exe"
@@ -14,79 +15,61 @@ def main():
     
     # tomkv tab layout
     tomkvLayout = [
-        [psg.Text("convert video to mkv", size=(
-            600, 0), justification="center")],
-        # Radio
-        [psg.Text("Select"), psg.Radio("directory", 'tomkvRadio', key="tomkvDir", enable_events=True, default=True),
-         psg.Radio("files", 'tomkvRadio', enable_events=True, key="tomkvFiles")],
-
-        [psg.Text("Select a folder",key="tomkvSelectText", expand_x=True, justification="center")],
+        [psg.Text("convert video to mkv",  justification="center",text_color="black")],
         # browser
-        [psg.LBox([], size=(20, 10), enable_events=True, expand_x=True, expand_y=True, key="tomkvList", select_mode="multiple"),
+        [psg.Listbox([],size_px=(500,200),enable_events=True,  key="tomkvList", select_mode="multiple"),
          psg.Column([
-             [psg.Listbox(['.mp4', '.mkv', '.flv', '.ts', '.avi'], enable_events=True,
-                          select_mode="multiple", size=(10, 5), key='tomkvFileTypes')],
-             [psg.Input(visible=False, enable_events=True, key="tomkvMyFiles", expand_x=True), psg.FilesBrowse(size=(10, 0), key="tomkvFilesBrowser", visible=False),
-                 psg.Input(visible=False, enable_events=True, key="tomkvMyFolders", expand_x=True), psg.FolderBrowse(size=(10, 0), key="tomkvFolderBrowser", visible=True)],
+             [psg.Listbox(['.mp4', '.mkv', '.flv', '.ts', '.avi'],size_px=(205,100), enable_events=True,
+                          select_mode="multiple", key='tomkvFileTypes')],
+             [psg.Input(visible=False, enable_events=True, key="tomkvMyFiles"), psg.FilesBrowse("select files",size=(10,1), key="tomkvFilesBrowser",),
+                 psg.Input(visible=False, enable_events=True, key="tomkvMyFolders"), psg.FolderBrowse("select folder",size=(10,1), key="tomkvFolderBrowser")],
              [psg.Button("delete", key="tomkvDelBtn", disabled=True,
-                         enable_events=True, size=(10, 0))]
+                         enable_events=True,size=(20.4,1))]
          ])],
-        [psg.Button("Convert to mkv", key="convertToMkv", size=(15, 0))],
+        [psg.Button("Convert to mkv", key="convertToMkv",size=(20,1))],
     ]
     # end of tomkv tab layout
     
     # toaudio tab layout
     toaudioLayout = [
-        [psg.Text("convert video to audio", size=(
-            600, 0), justification="center")],
-        # Radio
-        [psg.Text("Select"), psg.Radio("directory", 'toaudioRadio', key="toaudioDir", enable_events=True, default=True),
-         psg.Radio("files", 'toaudioRadio', enable_events=True, key="toaudioFiles")],
-
-        [psg.Text("Select a folder",key="toaudioSelectText", expand_x=True, justification="center")],
+        [psg.Text("convert video to audio", justification="center",text_color="black")],
         # browser
-        [psg.LBox([], size=(20, 10), enable_events=True, expand_x=True, expand_y=True, key="toaudioList", select_mode="multiple"),
+        [psg.Listbox([],size_px=(500,200),enable_events=True,  key="toaudioList", select_mode="multiple"),
          psg.Column([
-             [psg.Listbox(['.mp4', '.mkv', '.flv', '.ts', '.avi'], enable_events=True,
-                          select_mode="multiple", size=(10, 5), key='toaudioFileTypes')],
-             [psg.Input(visible=False, enable_events=True, key="toaudioMyFiles", expand_x=True), psg.FilesBrowse(size=(10, 0), key="toaudioFilesBrowser", visible=False),
-                 psg.Input(visible=False, enable_events=True, key="toaudioMyFolders", expand_x=True), psg.FolderBrowse(size=(10, 0), key="toaudioFolderBrowser", visible=True)],
+             [psg.Listbox(['.mp4', '.mkv', '.flv', '.ts', '.avi'],size_px=(205,100), enable_events=True,
+                          select_mode="multiple", key='toaudioFileTypes')],
+             [psg.Input(visible=False, enable_events=True, key="toaudioMyFiles"), psg.FilesBrowse("select files",size=(10,1),key="toaudioFilesBrowser"),
+                 psg.Input(visible=False, enable_events=True, key="toaudioMyFolders"), psg.FolderBrowse("select folder",size=(10,1), key="toaudioFolderBrowser")],
              [psg.Button("delete", key="toaudioDelBtn", disabled=True,
-                         enable_events=True, size=(10, 0))]
+                         enable_events=True,size=(20.4,1))]
          ])],
-        [psg.Button("Convert to audio", key="convertToaudio", size=(15, 0))],
+        [psg.Button("Convert to audio", key="convertToaudio",size=(20,1))],
     ]
     # end of toaudio tab layout
     
     # corp tab layout
     corpLayout = [
-        [psg.Text("corp video", size=(
-            600, 0), justification="center")],
-        # Radio
-        [psg.Text("Select"), psg.Radio("directory", 'corpRadio', key="corpDir", enable_events=True, default=True),
-         psg.Radio("files", 'corpRadio', enable_events=True, key="corpFiles")],
-
-        [psg.Text("Select a folder",key="corpSelectText", expand_x=True, justification="center")],
+        [psg.Text("corp video", justification="center",text_color="black")],
         # browser
-        [psg.LBox([], size=(20, 10), enable_events=True, expand_x=True, expand_y=True, key="corpList", select_mode="multiple"),
+        [psg.Listbox([],size_px=(500,210),enable_events=True,  key="corpList", select_mode="multiple"),
          psg.Column([
-             [psg.Listbox(['.mp4', '.mkv', '.flv', '.ts', '.avi'], enable_events=True,
-                          select_mode="multiple", size=(10, 5), key='corpFileTypes')],
-             [psg.Input(visible=False, enable_events=True, key="corpMyFiles", expand_x=True), psg.FilesBrowse(size=(10, 0), key="corpFilesBrowser", visible=False),
-                 psg.Input(visible=False, enable_events=True, key="corpMyFolders", expand_x=True), psg.FolderBrowse(size=(10, 0), key="corpFolderBrowser", visible=True)],
+             [psg.Listbox(['.mp4', '.mkv', '.flv', '.ts', '.avi'],size_px=(205,125), enable_events=True,
+                          select_mode="multiple", key='corpFileTypes')],
+             [psg.Input(visible=False, enable_events=True, key="corpMyFiles"), psg.FilesBrowse("select files",size=(10,1),key="corpFilesBrowser"),
+                 psg.Input(visible=False, enable_events=True, key="corpMyFolders"), psg.FolderBrowse("select folder",size=(10,1),key="corpFolderBrowser")],
              [psg.Button("delete", key="corpDelBtn", disabled=True,
-                         enable_events=True, size=(10, 0))]
+                         enable_events=True,size=(20.4,1))]
          ])],
-        [psg.Text("Top"),psg.Input("0",key="corpTop",size=(11,1),enable_events=True),
-         psg.Text("Right"),psg.Input("0",key="corpRight",size=(11,1),enable_events=True),
-         psg.Text("Bottom"),psg.Input("0",key="corpBottom",size=(11,1),enable_events=True),
-         psg.Text("Left  "),psg.Input("0",key="corpLeft",size=(11,1),enable_events=True)],
-        [psg.Button("Corp", key="convertCorp", size=(15, 0))],
+        [psg.Text("Top"),psg.Input("0",key="corpTop",enable_events=True),
+         psg.Text("Right"),psg.Input("0",key="corpRight",enable_events=True),
+         psg.Text("Bottom"),psg.Input("0",key="corpBottom",enable_events=True),
+         psg.Text("Left  "),psg.Input("0",key="corpLeft",enable_events=True)],
+        [psg.Button("Corp", key="convertCorp",size=(20,1))],
     ]
     # end of corp tab layout
   
     # tab group
-    tomkvTab = [psg.Tab('to Mkv', tomkvLayout, key="tomkv",title_color="red"),
+    tomkvTab = [psg.Tab('to Mkv', tomkvLayout, key="tomkv",background_color="red"),
                 psg.Tab("to Audio", toaudioLayout, key="toaudio",title_color="green"),
                 psg.Tab("corp", corpLayout, key="corp",title_color="yellow"),]
     # end of tab group
@@ -94,12 +77,12 @@ def main():
     # layout
     layout = [
         [psg.TabGroup([tomkvTab],change_submits=True,key="myTabs")],
-        [psg.ProgressBar(100, orientation='h', expand_x=True, size=(20, 20),  key='PBar')],
-        [psg.OK(), psg.Exit(),psg.Text("",key="currentFile")]
+        [psg.ProgressBar(100, orientation='h',  key='PBar')],
+        [psg.Text("",key="currentFile",justification="center")]
     ]
     # end of layout
 
-    window = psg.Window("my first app", layout, resizable=True, size=(600, 600))
+    window = psg.Window("my first app", layout, resizable=False,)
 
     while True:
         event, values = window.read()
@@ -107,19 +90,6 @@ def main():
         print(event)
         if event in (psg.WIN_CLOSED, "Exit"):
             break
-
-        # switch between folder/file selection tomkv
-        if event == f"{activeTab}Dir":
-            window[f"{activeTab}FilesBrowser"].Update(visible=False)
-            window[f"{activeTab}FileTypes"].Update(visible=True)
-            window[f"{activeTab}FolderBrowser"].Update(visible=True) 
-            window[f"{activeTab}SelectText"].Update("Select a folder") 
-        if event == f"{activeTab}Files":
-            window[f"{activeTab}FilesBrowser"].Update(visible=True)
-            window[f"{activeTab}FileTypes"].Update(visible=False)
-            window[f"{activeTab}FolderBrowser"].Update(visible=False)
-            window[f"{activeTab}SelectText"].Update("Select files") 
-        # end of switch between folder/file selection tomkv
 
         # browse for files
         if event == f"{activeTab}MyFiles":
