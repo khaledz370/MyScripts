@@ -11,6 +11,7 @@ def main():
     cBottom=0
     cLeft=0
     cRight=0
+    selectedFilesList=[]
     # end of global values
     
     # tomkv tab layout
@@ -21,7 +22,7 @@ def main():
          psg.Column([
              [psg.Listbox(['.mp4', '.mkv', '.flv', '.ts', '.avi'],size_px=(205,100), enable_events=True,
                           select_mode="multiple", key='tomkvFileTypes')],
-             [psg.Input(visible=False, enable_events=True, key="tomkvMyFiles"), psg.FilesBrowse("select files",size=(10,1), key="tomkvFilesBrowser",),
+             [psg.Input(visible=False, enable_events=True, key="tomkvMyFiles"), psg.FilesBrowse("select files",size=(10,1), key="tomkvFilesBrowser"),
                  psg.Input(visible=False, enable_events=True, key="tomkvMyFolders"), psg.FolderBrowse("select folder",size=(10,1), key="tomkvFolderBrowser")],
              [psg.Button("delete", key="tomkvDelBtn", disabled=True,
                          enable_events=True,size=(20.4,1))]
@@ -95,7 +96,8 @@ def main():
         if event == f"{activeTab}MyFiles":
             window[f"{activeTab}List"].Update(values[f"{activeTab}MyFiles"].split(";"))
             selectedFilesList = str(values[f"{activeTab}MyFiles"]).split(";")
-            if len(selectedFilesList):
+            print(selectedFilesList)
+            if len(selectedFilesList) and selectedFilesList != ['']:
                 # print(selectedFilesList)
                 selectedDir = fixPath(str(splitPath(selectedFilesList[0])["path"]))
         # end of browse for files
@@ -104,15 +106,16 @@ def main():
         if event == f"{activeTab}MyFolders":
             ftypesArray = values[f"{activeTab}FileTypes"]
             selectedDir = fixPath(str(values[f"{activeTab}MyFolders"]))
-            if not len(ftypesArray):
-                ftypesArray = ['.mp4', '.mkv', '.flv', '.ts', '.avi']
-            newArray = []
-            for x in os.listdir(selectedDir):
-                if x.endswith(tuple(ftypesArray)):
-                    newArray.append((f"{selectedDir}\\{x}"))
-            selectedFilesList = newArray
-            # print(selectedFilesList)
-            window[f"{activeTab}List"].Update(selectedFilesList)
+            if selectedDir:
+                if not len(ftypesArray):
+                    ftypesArray = ['.mp4', '.mkv', '.flv', '.ts', '.avi']
+                newArray = []
+                for x in os.listdir(selectedDir):
+                    if x.endswith(tuple(ftypesArray)):
+                        newArray.append((f"{selectedDir}\\{x}"))
+                selectedFilesList = newArray
+                # print(selectedFilesList)
+                window[f"{activeTab}List"].Update(selectedFilesList)
         # end of browse for folder
         
         # on select file types
@@ -132,7 +135,7 @@ def main():
         # enable and disable delete button
         if event == f"{activeTab}List":
             selectedItemsInList = values[f"{activeTab}List"]
-            # print(selectedItemsInList)
+            print(selectedItemsInList)
             if len(selectedItemsInList):
                 window[f"{activeTab}DelBtn"].Update(disabled=False)
             else:
