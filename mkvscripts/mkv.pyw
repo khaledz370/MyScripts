@@ -278,5 +278,9 @@ def fixPath(path):
     return path.replace("/", "\\")
 # end of fix file paht 
 
+# encode
+def toUft8(list):
+    return [x.encode('utf-8') for x in list]
+
 if __name__ == "__main__":
     main()
