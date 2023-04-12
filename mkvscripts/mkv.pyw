@@ -13,6 +13,7 @@ def main():
     mkvMerge = f"{settings['mkvDir']}\\mkvmerge.exe"
     mkvpropedit = f"{settings['mkvDir']}\\mkvpropedit.exe"
     selectedDir = ""
+    selectedFilesList = []
     cTop = 0
     cBottom = 0
     cLeft = 0
@@ -33,14 +34,12 @@ def main():
          psg.Column([
              [psg.Listbox(fileTypesList, enable_events=True,
                           select_mode="multiple", s=(24, 14), key='tomkvFileTypes')],
-             [psg.Input(visible=False, enable_events=True, key="tomkvMyFiles"),
-              psg.Button("Files", file_types=fileTypes, button_type=21,
-                         expand_x=True, key="tomkvFilesBrowser"),
-              psg.Input(visible=False, enable_events=True,
-                        key="tomkvMyFolders", expand_x=True),
-              psg.Button("Folder", button_type=1, expand_x=True,  key="tomkvFolderBrowser", visible=True)],
-             [psg.Button("delete", key="tomkvDelBtn", disabled=True,
-                         enable_events=True, expand_x=True)]
+             [
+                psg.Input(visible=False, enable_events=True, key="tomkvMyFiles"),
+                psg.Button("Files",target=(psg.ThisRow,-1), file_types=fileTypes, button_type=21,expand_x=True,enable_events=True, key="tomkvFilesBrowser"),
+                psg.Input(visible=False, enable_events=True,key="tomkvMyFolders", expand_x=True),
+                psg.Button("Folder",target=(psg.ThisRow,-1), button_type=1, expand_x=True,  key="tomkvFolderBrowser", visible=True)],
+             [psg.Button("delete", key="tomkvDelBtn", disabled=True,enable_events=True, expand_x=True)]
          ], justification="c")],
         [psg.Button("Convert to mkv", key="convertToMkv", s=(15, 0))],
     ]
@@ -58,11 +57,11 @@ def main():
              [psg.Listbox(fileTypesList, enable_events=True,
                           select_mode="multiple", s=(24, 14), key='toaudioFileTypes')],
              [psg.Input(visible=False, enable_events=True, key="toaudioMyFiles", expand_x=True),
-              psg.Button("Files", file_types=fileTypes, button_type=21,
+              psg.Button("Files",target=(psg.ThisRow,-1), file_types=fileTypes, button_type=21,
                          expand_x=True, key="toaudioFilesBrowser"),
               psg.Input(visible=False, enable_events=True,
                         key="toaudioMyFolders", expand_x=True),
-              psg.Button("Folder", button_type=1, expand_x=True,  key="toaudioFolderBrowser", visible=True)],
+              psg.Button("Folder",target=(psg.ThisRow,-1), button_type=1, expand_x=True,  key="toaudioFolderBrowser", visible=True)],
              [psg.Button("delete", key="toaudioDelBtn", disabled=True,
                          enable_events=True, expand_x=True)]
          ])],
@@ -81,8 +80,8 @@ def main():
          psg.Column([
              [psg.Listbox(fileTypesList, enable_events=True,
                           select_mode="multiple", s=(24, 12), key='corpFileTypes')],
-             [psg.Input(visible=False, enable_events=True, key="corpMyFiles", expand_x=True), psg.Button("Files", file_types=fileTypes, button_type=21, expand_x=True, key="corpFilesBrowser"),
-                 psg.Input(visible=False, enable_events=True, key="corpMyFolders", expand_x=True), psg.Button("Folder", button_type=1, expand_x=True, key="corpFolderBrowser")],
+             [psg.Input(visible=False, enable_events=True, key="corpMyFiles", expand_x=True), psg.Button("Files",target=(psg.ThisRow,-1), file_types=fileTypes, button_type=21, expand_x=True, key="corpFilesBrowser"),
+                 psg.Input(visible=False, enable_events=True, key="corpMyFolders", expand_x=True), psg.Button("Folder",target=(psg.ThisRow,-1), button_type=1, expand_x=True, key="corpFolderBrowser")],
              [psg.Button("delete", key="corpDelBtn", disabled=True,
                          enable_events=True, expand_x=True)]
          ])],
@@ -113,7 +112,7 @@ def main():
     # layout
     layout = [
         [psg.TabGroup([tomkvTab], change_submits=True, key="myTabs")],
-        [psg.ProgressBar(100, orientation='h', expand_x=True,
+        [psg.Text("Progress",key="currentFile",s=(20)),psg.ProgressBar(100, orientation='h', expand_x=True,
                          s=(20, 30),  key='PBar')],
     ]
     # end of layout
@@ -126,6 +125,7 @@ def main():
         event, values = window.read()
         activeTab = window['myTabs'].Get()
         print("event => ", event)
+        # print("active tab => ", activeTab)
         if event in (psg.WIN_CLOSED, "Exit"):
             break
 
@@ -134,6 +134,7 @@ def main():
 
         # browse for files
         if event == f"{activeTab}MyFiles":
+            # print(event)
             window[f"{activeTab}List"].Update(
                 values[f"{activeTab}MyFiles"].split(";"))
             selectedFilesList = str(values[f"{activeTab}MyFiles"]).split(";")
