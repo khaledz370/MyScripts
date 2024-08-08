@@ -15,8 +15,10 @@ set /p message="Enter the commit message: "
 set "GIT_AUTHOR_DATE=%date%"
 set "GIT_COMMITTER_DATE=%date%"
 
-:: Add changes and commit with the provided message
+:: Stage all changes, including untracked files
 git add .
+
+:: Commit with the provided message
 git commit -m "%message%"
 
 :: Return to the original directory
