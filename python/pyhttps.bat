@@ -1,0 +1,1 @@
+python "G:\Win Programs\Other programs\AppData\scripts\python\https.py"
