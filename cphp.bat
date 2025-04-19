@@ -33,7 +33,7 @@ echo 7. 8.1.10
 echo 8. 8.2.20
 echo 9. 8.3.9
 
-set php_dir="G:\Books-and-courses\Programming\laragon\bin\php"
+set php_dir="I:\laragon\bin\php"
 set /p choice=Enter choice (1-9):
 
 if "%choice%"=="1" set PHP_VERSION=%php_dir%\php-5.4.9
